@@ -1,13 +1,9 @@
 # Trabalho Métodos Quantitativos
 
-# Colegas de equipe
-# Nome: Ian Lucas 
+# equipe <- c("Ian Lucas", "Pedro Guilherme")
+# matrículas <- c(2310294, 2223975)
 
-# Matrícula: 2310294  
 
-# Nome: Pedro Guilherme
-
-# Matrícula: 2223975
 
 #Questão 1
 
@@ -117,7 +113,7 @@ q5_c <- 1 - ppois(4, q5_p)
 
 q5_d <- pbinom(3, 10, dpois(0, 0.5))
 
-#questão 6
+#Questão 6
 
 #a)distribuição binomial
 n <- 15 
@@ -183,3 +179,105 @@ prob_maior_1002 <- 1 - pnorm(1002, mean = 1000, sd = 10)
 n <- 10
 prob_no_max_4 <- pbinom(4, n, prob_maior_1002)
 prob_no_max_4
+
+
+#Questão 9
+
+tamanho_amostra <- function(N, e, alpha, p) {
+
+    Z <- qnorm(1 - alpha/2) # Valor crítico para um intervalo de confiança de 95%
+
+    n <- (N * p * (1 - p) * (Z^2)) / ((N - 1) * (e^2) + p * (1 - p) * (Z^2))
+
+    n_arredondado <- ceiling(n) # Arredonda o valor de n para cima
+
+    return(n_arredondado)
+}
+# Exemplo
+# N = 5000 (Tamanho da População)
+# e = 0.05 (Margem de Erro)
+# alpha = 0.05 (Nível de Significância)
+# p = 0.25 (Probabilidade de Sucesso)
+
+# n = 273 (Tamanho da Amostra)
+q_9 <- tamanho_amostra(5000, 0.05, 0.05, 0.25)
+print(q_9)
+
+
+# Questão 10
+
+# media = 2000 Fornecida  pelo pesquisador
+# variancia = 1254 Fornecida pelo pesquisador
+# desvio _padrao = raiz da variancia
+
+media_pesquisador <- 2000
+variancia_pesquisador <- 1254
+desvio_padrao_pesquisador <- sqrt(variancia_pesquisador)
+
+amostra <- rnorm(50, media_pesquisador, desvio_padrao_pesquisador)
+
+#Amostra Aleatória (n) com 50 elementos
+amostra
+
+#Média da Amostra
+mean(amostra)
+
+#Variância da Amostra
+var(amostra)
+
+#Desvio Padrão da Amostra
+sd(amostra)
+
+#Limite Superior e Inferior da Amostra com Confiabilidade de 95%
+resultado <- t.test(amostra, mu = media_pesquisador)
+resultado
+
+# Questão 11
+
+# N = 500 (Quantidade de Peças)
+# e = 0.02 (Margem de erro máximo)
+# alpha = 0.05 (Nível de significância)
+# p = 0.01 (Proporção de itens com defeito)
+
+# n = 81 (Tamanho de Amostra)
+q_11 <- tamanho_amostra(500, 0.02, 0.05, 0.01)
+print(q_11)
+
+# Questão 12
+
+#Quantidade de Pessoas por Família
+quantidade_familia <- c(3, 4, 5, 4, 2, 4, 4, 4, 4, 5, 6, 6, 4, 6, 2, 5, 4, 4, 4, 6, 3, 6, 5, 4, 3)
+
+#Renda Mensal
+renda_mensal <- c(800, 850, 1000, 1000, 1000, 1000, 1000, 1100, 1125, 1158, 1160, 1162, 1176, 1325, 1325, 1325, 1325, 1340, 1354, 1525, 1525, 1575, 1760, 1800)
+
+summary(quantidade_familia)
+summary(renda_mensal)
+
+#Médias e Desvio Padrão
+
+media_quantidade_familia <- mean(quantidade_familia)
+media_renda_mensal <- mean(renda_mensal)
+
+desvio_padrao_quantidade_familia <- sd(quantidade_familia)
+desvio_padrao_renda_mensal <- sd(renda_mensal)
+
+#Quantidades de Pessoas por Família e Renda Mensal
+n_quantidade_familia <- length(quantidade_familia)
+
+n_renda <- length(renda_mensal)
+
+#Taxas de Erro
+
+erro_familia <- desvio_padrao_quantidade_familia / sqrt(n_quantidade_familia)
+erro_renda <- desvio_padrao_renda_mensal / sqrt(n_renda)
+
+#Intervalos
+
+#Família
+# [3.79568 <= media <= 4.76432]
+t.test(quantidade_familia)
+
+#Renda
+# [1126.534 <= media <= 1349.300]
+t.test(renda_mensal)
